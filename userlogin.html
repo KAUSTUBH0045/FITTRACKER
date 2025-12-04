@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FitTracker - Dashboard</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+
+  <style>
+    body { background: #111; color: white; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; }
+    .banner-image { height: 350px; width: 100%; object-fit: cover; margin-top: 90px; }
+    .card { border-radius: 20px; background-color: #000; text-align: center; }
+    .weekly-section { border: 2px solid #228dd7; padding: 40px 20px; border-radius: 20px; background: rgba(20,20,20,0.8); }
+    .challenge-card { background: linear-gradient(145deg,#1c1c1c,#111); border-radius:15px; padding:20px; cursor:pointer; }
+    #rewardDisplay { margin-top:30px; text-align:center; color:#fff; padding:20px; border:2px solid #228dd7; border-radius:20px; background: rgba(34,141,215,0.06); }
+    .current-challenge { margin-top: 30px; padding: 20px; border-radius: 12px; background: rgba(0,0,0,0.6); border: 1px solid #2b2b2b; }
+    .progress { height: 22px; border-radius: 12px; overflow: hidden; background:#222; }
+    .progress-bar { background: linear-gradient(90deg,#28a745,#82e0aa); }
+    form.inline { display:inline-block; margin-right:8px; }
+    .chat-iframe { border: 1px solid rgba(0,0,0,0.7); border-radius:8px; }
+  </style>
+</head>
+<body>
+  <div class="container-fluid p-0">
+
+    <!-- header -->
+    <header id="header" class="header d-flex align-items-center fixed-top bg-dark">
+      <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
+        <a href="/" class="logo d-flex align-items-center text-white">
+          <h1 class="sitename"><img src="{{ url_for('static', filename='images/icon.jpeg') }}" alt="logo" style="height:50px;margin-right:10px;">Fit<span style="color:#228dd7">Tracker</span></h1>
+        </a>
+        <nav class="navmenu">
+          <ul class="nav">
+            <li class="nav-item"><a href="/" class="nav-link active text-white">Home</a></li>
+            <li class="nav-item"><a href="/contact" class="nav-link text-white">Contact</a></li>
+            <li class="nav-item"><a href="/logout" class="nav-link text-white">Logout</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <!-- banner -->
+    <div style="margin-top:90px;">
+      <img src="{{ url_for('static', filename='images/km.jpg') }}" class="banner-image" alt="Banner" />
+    </div>
+
+    <!-- AI Chatbot Section -->
+    <div class="row m-3" data-aos="fade-right">
+      <div class="col-md-6">
+        <h2 class="bg-dark p-2 rounded">FitTracker's AI:</h2>
+        <p>
+          Tell us your physique, goals, workout timings, calorie intake, etc.
+          and let our AI chatbot create a tailored plan for your body
+          transformation journey. It can guide you on:
+        </p>
+        <ul>
+          <li>Weight Loss</li>
+          <li>Muscle Gain</li>
+          <li>Post Workout Physique Visuals</li>
+        </ul>
+      </div>
+      <div class="col-md-6" data-aos="zoom-in-left" data-aos-duration="2000">
+        <iframe
+          id="embed-preview-iframe"
+          src="https://embed.pickaxeproject.com/axe?id=Physique_Transformer_Photo_Enhancer_R3GVA&mode=embed_gold&host=beta&theme=custom"
+          width="100%"
+          height="500px"
+          class="chat-iframe"
+          frameborder="0"
+        ></iframe>
+      </div>
+    </div>
+
+    <!-- Cards Section -->
+    <div class="row m-3 cards-section" data-aos="fade-up">
+      <div class="card-group gap-3">
+        <div class="card">
+          <img src="{{ url_for('static', filename='images/wksp.jpeg') }}" class="card-img-top" height="350px" width="100%" alt="Workout"/>
+          <div class="card-body">
+            <p>Click Below For Your Workout Split 👇</p>
+            <button class="btn btn-primary" onclick="window.location.href='/1st'">Split</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <img src="{{ url_for('static', filename='images/dietlogo.jpeg') }}" class="card-img-top" height="350px" width="100%" alt="Diet Plan"/>
+          <div class="card-body">
+            <p>Click Below For Your Diet Plan 👇</p>
+            <button class="btn btn-success" onclick="window.location.href='/diet'">Diet Plan</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <img src="{{ url_for('static', filename='images/fdbk.jpeg') }}" class="card-img-top" height="350px" width="100%" alt="Feedback"/>
+          <div class="card-body">
+            <p>Click Below For Feedback Form 👇</p>
+            <button class="btn btn-warning" onclick="window.location.href='/feedback'">Feedback</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Weekly Challenges -->
+    <div class="container weekly-section" data-aos="fade-up">
+      <h2 class="weekly-title text-center" style="color:#228dd7; margin-bottom:30px;">Weekly Challenges</h2>
+
+      <div class="row g-4 justify-content-center">
+        <div class="col-md-4">
+          <div class="challenge-card" onclick="selectChallenge('7-Day Fat Burn')">
+            <h4>7-Day Fat Burn</h4>
+            <p>Complete daily cardio for 30 mins and track calories.</p>
+            <button class="btn btn-outline-light mt-2" onclick="selectChallenge('7-Day Fat Burn')">View / Join</button>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="challenge-card" onclick="selectChallenge('30-Day Muscle Gain')">
+            <h4>30-Day Muscle Gain</h4>
+            <p>Follow strength training exercises 5 days/week.</p>
+            <button class="btn btn-outline-light mt-2" onclick="selectChallenge('30-Day Muscle Gain')">View / Join</button>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="challenge-card" onclick="selectChallenge('Healthy Eating Week')">
+            <h4>Healthy Eating Week</h4>
+            <p>Include 5 servings of fruits/veggies daily.</p>
+            <button class="btn btn-outline-light mt-2" onclick="selectChallenge('Healthy Eating Week')">View / Join</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-4" id="rewardDisplay">Select a challenge to see your reward!</div>
+
+      <!-- Enrollment form container injected by JS -->
+      <div id="challengeFormContainer"></div>
+
+      <!-- CURRENT CHALLENGE (from server) -->
+      <div id="currentChallengeWrapper" class="mt-4">
+        {% if challenge %}
+        <div class="current-challenge">
+          <h5>Your Current / Most Recent Challenge</h5>
+          <p><strong>{{ challenge.challenge_name }}</strong></p>
+          <p>Start: {{ challenge.start_date }} &nbsp; | &nbsp; End: {{ challenge.end_date or 'N/A' }}</p>
+          <p>Reward: {{ challenge.reward_unlocked or '—' }}</p>
+          <p>Status: {{ challenge.status }}</p>
+
+          <label>Progress</label>
+          <div class="progress mb-2">
+            <div class="progress-bar" role="progressbar" style="width: {{ challenge.progress or 0 }}%;" aria-valuenow="{{ challenge.progress or 0 }}" aria-valuemin="0" aria-valuemax="100">
+              {{ challenge.progress or 0 }}%
+            </div>
+          </div>
+
+          <!-- Update progress quick form -->
+          <form action="/update_progress" method="POST" class="inline">
+            <input type="hidden" name="challenge_name" value="{{ challenge.challenge_name }}">
+            <input type="number" name="progress" min="0" max="100" placeholder="New %" required style="width:110px; display:inline-block; margin-right:6px;">
+            <button class="btn btn-primary">Update</button>
+          </form>
+
+          <!-- Mark complete -->
+          <form action="/complete_challenge" method="POST" class="inline">
+            <input type="hidden" name="challenge_name" value="{{ challenge.challenge_name }}">
+            <button class="btn btn-success">Mark as Completed</button>
+          </form>
+        </div>
+        {% else %}
+        <div class="current-challenge">
+          <p>No active challenges. Join one above!</p>
+        </div>
+        {% endif %}
+      </div>
+
+    </div>
+
+  </div>
+
+<script>
+  const rewards = {
+    "7-Day Fat Burn": { text: "Reward: Whey Protein Pack 🥤", img: "{{ url_for('static', filename='images/whey.jpg') }}" },
+    "30-Day Muscle Gain": { text: "Reward: Creatine Supplement 💪", img: "{{ url_for('static', filename='images/creatine.jpg') }}" },
+    "Healthy Eating Week": { text: "Reward: Gym Subscription 🏋️‍♂️", img: "{{ url_for('static', filename='images/gym.jpg') }}" }
+  };
+
+  function selectChallenge(challenge) {
+    const rewardDiv = document.getElementById("rewardDisplay");
+    const r = rewards[challenge] || { text: "Reward: Surprise", img: "" };
+    rewardDiv.innerHTML = `
+      ${r.img ? `<img src="${r.img}" alt="${challenge} Reward" style="max-width:180px; border-radius:12px; margin-bottom:12px;">` : ''}
+      <div style="font-size:18px">${r.text}</div>
+    `;
+
+    const formContainer = document.getElementById("challengeFormContainer");
+    formContainer.style.display = "block";
+    formContainer.innerHTML = `
+      <h3 style="text-align:center;margin-bottom:20px;">Enroll for "${challenge}"</h3>
+      <form id="enrollForm" onsubmit="submitForm(event, '${challenge}')">
+        <input type="text" name="name" placeholder="Your Name" required class="form-control mb-2" />
+        <input type="email" name="email" placeholder="Email Address" required class="form-control mb-2" />
+        <input type="number" name="age" placeholder="Your Age" required class="form-control mb-2" />
+        <select name="experience" required class="form-control mb-2">
+          <option value="">Select Experience Level</option>
+          <option value="beginner">Beginner</option>
+          <option value="intermediate">Intermediate</option>
+          <option value="advanced">Advanced</option>
+        </select>
+        <input type="text" name="goal" placeholder="Your Personal Goal" required class="form-control mb-2" />
+        <button type="submit" class="btn btn-primary w-100">Enroll Now</button>
+      </form>
+    `;
+  }
+
+  function submitForm(event, challenge) {
+    event.preventDefault();
+    const form = event.target;
+    const payload = {
+      name: form.name.value,
+      email: form.email.value,
+      age: form.age.value,
+      experience: form.experience.value,
+      goal: form.goal.value,
+      challenge_name: challenge
+    };
+
+    fetch("/enroll_challenge", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    })
+    .then(r => r.json())
+    .then(resp => {
+      alert(resp.message || "Enrolled!");
+      window.location.href = "/user";
+    })
+    .catch(err => {
+      console.error(err);
+      alert("Enrollment failed. Please try again.");
+    });
+  }
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script> AOS.init(); </script>
+
+</body>
+</html>
